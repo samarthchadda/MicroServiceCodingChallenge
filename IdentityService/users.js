@@ -32,7 +32,7 @@ app.post('/user',(req,res,next)=>{
     
     // console.log(req.body);   //printing JSON data send by post request
 
-    //saving book in our database
+    //saving user in our database
     var newUser = {
         FirstName:req.body.FirstName,
         LastName:req.body.LastName,
@@ -56,6 +56,37 @@ app.post('/user',(req,res,next)=>{
     res.send("User Created with success");
 
 })
+
+
+//To Get all Users
+app.get('/users',(req,res,next)=>{
+
+        //this will return all the users in collection
+    User.find().then((users)=>{
+        // console.log(users);
+        res.json(users);
+    })
+    .catch(err=>console.log(err));
+
+})
+
+
+//To get Particular user 
+app.get('/user/:id',(req,res,next)=>{
+
+    User.findById(req.params.id).then((user)=>{
+
+        if(user)            //user is present, so we return its dataa
+        {
+            res.json(user);
+        }else{
+            res.sendStatus(404);
+        }
+    })
+    .catch(err=>console.log(err));
+
+})
+
 
 app.listen(3000,()=>{
     console.log("Up and running! -- This is our Identity service");
