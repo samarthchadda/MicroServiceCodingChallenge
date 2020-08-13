@@ -87,6 +87,16 @@ app.get('/user/:id',(req,res,next)=>{
 
 })
 
+//Delete a User
+app.delete("/user/:id",(req,res,next)=>{
+
+    User.findByIdAndRemove(req.params.id).then(()=>{
+        res.send("User removed with success!")
+    })
+    .catch(err=>console.log(err));
+
+})
+
 
 app.listen(3000,()=>{
     console.log("Up and running! -- This is our Identity service");
