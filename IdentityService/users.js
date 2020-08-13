@@ -12,6 +12,9 @@ app.use(bodyParser.json());
 //load mongoose
 const mongoose = require('mongoose');
 
+require('./UserModel');
+const User = mongoose.model("User");
+
 //connect to database
 mongoose.connect('mongodb+srv://samarth:YEhVsBnsh2nXlMa5@cluster0.ahjqa.mongodb.net/IdentityService?retryWrites=true&w=majority', { useUnifiedTopology: true })
                                             .then(res=>{
