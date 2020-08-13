@@ -41,13 +41,31 @@ app.post('/kyc',(req,res,next)=>{
 
     console.log(kyc);
 
+    //Registering USer (ONLY IF the LastName starts with "A")
+    axios.get("http://localhost:3000/user/"+newKYC.UserID)
+            .then(user=>{
+                console.log("USER : ", user.data);
+
+                if(user.data.LastName.startsWith('A')){
+                    console.log("Name starts with A");
+                    kyc.save().then(()=>{
+                        console.log("New KYC Registered!");
+                    }).catch(err=>console.log(err));
+                
+                    res.send("KYC Created with success");
+                }
+                else{
+                    console.log("Different Name");
+                    res.send("KYC Registration Failed!");                    
+
+                }
+
+            })
+
+
 
     
-    kyc.save().then(()=>{
-        console.log("New KYC Registered!");
-    }).catch(err=>console.log(err));
-
-    res.send("KYC Created with success");
+    
 
 });
 
