@@ -36,38 +36,53 @@ app.post('/booking', (req,res,next)=>{
     
 
     var dt1 = new Date(booking.BookingInfo);
+    console.log("Date 1 : ", dt1);
     var hrs1 = dt1.getHours().toString();
     var min1 = dt1.getMinutes().toString();
     var sec1 = dt1.getSeconds().toString();
 
     //checking if booking already exist in a timeslot
 
-        Booking.find().then((bookings)=>{
-            
-            bookings.forEach(b=>{
-                var dt2 = new Date(b.BookingInfo);
-                var hrs2 = dt1.getHours().toString();
-                var min2 = dt1.getMinutes().toString();
-                var sec2 = dt1.getSeconds().toString();
+            Booking.find().then((bookings)=>{
 
-                if(dt1.toString() == dt2.toString())
+            let bookingBool = true;
+
+            bookings.forEach(b=>{
+                // var dt2 = new Date(b.BookingInfo);
+                // console.log("Date 2 :", dt2);
+                // var hrs2 = dt2.getHours().toString();
+                // var min2 = dt2.getMinutes().toString();
+                // var sec2 = dt2.getSeconds().toString();
+                console.log("Booking 2 :", b.BookingInfo);
+
+                if(booking.BookingInfo.toString() === b.BookingInfo.toString())
                 {
                     console.log("TimeSlot is already occupied");
-                    res.send("Booking NOT POSSIBLE");
-                }else{
-                    console.log("TimeSlot is available");
-                    booking.save().then(()=>{
-                        res.send("Booking DONE");
-                    })
-                    .catch(err=>console.log(err));
-                }
-                
-            })
-            
+                    bookingBool = false;              
+                    
+                  //send a response                  
+                                               
+                } else{
+                    console.log("Slot Available");
+         
+                    // return;     
+                }    
+            })            
+
+            if(bookingBool){
+                console.log("yes!!");
+                booking.save().then(()=>{
+                    res.send("Booking DONE");
+                })
+                .catch(err=>console.log(err));
+            }else{
+                res.send("Booking not DONE");
+            }
+
         })
         .catch(err=>console.log(err))
     
-  
+     
 })
 
 
