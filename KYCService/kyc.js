@@ -24,6 +24,33 @@ mongoose.connect('mongodb+srv://samarth:YEhVsBnsh2nXlMa5@cluster0.ahjqa.mongodb.
 
 
 
+//KYC Registration functionality
+app.post('/kyc',(req,res,next)=>{
+    
+    // console.log(req.body);   //printing JSON data send by post request
+
+    //saving KYC in our database
+    var newKYC = {
+        UserID:req.body.UserID,
+        dateOfRegistration:req.body.dateOfRegistration            
+    };
+
+    //model instance
+        //creating a new KYC with data from POST request
+    var kyc = new KYCReg(newKYC);
+
+    console.log(kyc);
+
+
+    
+    kyc.save().then(()=>{
+        console.log("New KYC Registered!");
+    }).catch(err=>console.log(err));
+
+    res.send("KYC Created with success");
+
+});
+
 
 app.listen(3002,()=>{
     console.log("Up and running! -- This is our KYC service");

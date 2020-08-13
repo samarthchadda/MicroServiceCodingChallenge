@@ -108,7 +108,7 @@ app.get("/booking/:id",(req,res,next)=>{
     //if Booking is valid , we need to send requests to other services
     //For this , we need a library called 'axios'(allows to make http requests to any address)
 
-    //get request to customers service
+    //get request to IdentityService
     axios.get("http://localhost:3000/user/"+bookingData.UserID)
                         .then((result)=>{
                             console.log("User Data : ",result.data);
