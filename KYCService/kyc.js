@@ -52,6 +52,54 @@ app.post('/kyc',(req,res,next)=>{
 });
 
 
+//To Get all KYCs
+app.get('/kycs',(req,res,next)=>{
+
+        //this will return all the KYCs in collection
+    KYCReg.find().then((kycs)=>{
+        
+        res.json(kycs);
+    })
+    .catch(err=>console.log(err));
+
+})
+
+
+app.get("/kyc/:id",(req,res,next)=>{
+
+    KYCReg.findById(req.params.id).then((KYCData)=>{
+
+    if(KYCData)            //KYCData is present, so we return its dataa
+    {
+    
+    //get request to IdentityService
+    axios.get("http://localhost:3000/user/"+KYCData.UserID)
+                        .then((result)=>{
+                            console.log("User Data : ",result.data);
+                            var dt = new Date(KYCData.dateOfRegistration );
+                            console.log(dt.toLocaleDateString());
+
+                            var KYCObject = {KYCid : KYCData._id,
+                                            UserID:result.data._id,
+                                            UserFirstName:result.data.FirstName,
+                                            UserLastName:result.data.LastName,
+                                            DateOfRegistration: dt.toLocaleDateString()                                           
+
+                                        };
+
+                            res.json(KYCObject);
+                        
+                        });
+
+    }else{
+        res.sendStatus(404);
+    }
+    })
+    .catch(err=>console.log(err));
+
+})
+
+
 app.listen(3002,()=>{
     console.log("Up and running! -- This is our KYC service");
 });

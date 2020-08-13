@@ -113,12 +113,12 @@ app.get("/booking/:id",(req,res,next)=>{
                         .then((result)=>{
                             console.log("User Data : ",result.data);
                             var dt = new Date(bookingData.BookingInfo);
-                            var hrs = dt.getHours().toString();
-                            var min = dt.getMinutes().toString();
-                            var sec = dt.getSeconds().toString();
+                            // var hrs = dt.getHours().toString();
+                            // var min = dt.getMinutes().toString();
+                            // var sec = dt.getSeconds().toString();
                                                         
-                            var timeOfBooking = hrs+":"+min+":"+sec;
-                            var bookingObject = {Username : result.data.Username,TimeOfBooking:timeOfBooking};
+                            // var timeOfBooking = hrs+":"+min+":"+sec;
+                            var bookingObject = {Username : result.data.Username,TimeOfBooking:dt.toTimeString()};
                             res.json(bookingObject);
                           
                         });
