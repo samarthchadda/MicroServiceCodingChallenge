@@ -33,18 +33,41 @@ app.post('/booking', (req,res,next)=>{
 
     var booking = new Booking(newBooking);
     console.log(booking);
+    
 
-    var dt = new Date(booking.BookingInfo);
-    console.log(dt.getHours());
-    console.log(dt.getMinutes());
-    console.log(dt.getSeconds());
-      
+    var dt1 = new Date(booking.BookingInfo);
+    var hrs1 = dt1.getHours().toString();
+    var min1 = dt1.getMinutes().toString();
+    var sec1 = dt1.getSeconds().toString();
 
+    //checking if booking already exist in a timeslot
 
-    booking.save().then(()=>{
-        res.send("Booking DONE");
-    })
-    .catch(err=>console.log(err));
+        Booking.find().then((bookings)=>{
+            
+            bookings.forEach(b=>{
+                var dt2 = new Date(b.BookingInfo);
+                var hrs2 = dt1.getHours().toString();
+                var min2 = dt1.getMinutes().toString();
+                var sec2 = dt1.getSeconds().toString();
+
+                if(dt1.toString() == dt2.toString())
+                {
+                    console.log("TimeSlot is already occupied");
+                    res.send("Booking NOT POSSIBLE");
+                }else{
+                    console.log("TimeSlot is available");
+                    booking.save().then(()=>{
+                        res.send("Booking DONE");
+                    })
+                    .catch(err=>console.log(err));
+                }
+                
+            })
+            
+        })
+        .catch(err=>console.log(err))
+    
+  
 })
 
 
@@ -74,8 +97,13 @@ app.get("/booking/:id",(req,res,next)=>{
     axios.get("http://localhost:3000/user/"+bookingData.UserID)
                         .then((result)=>{
                             console.log("User Data : ",result.data);
-
-                            var bookingObject = {Username : result.data.Username,BookingInfo:bookingData.BookingInfo};
+                            var dt = new Date(bookingData.BookingInfo);
+                            var hrs = dt.getHours().toString();
+                            var min = dt.getMinutes().toString();
+                            var sec = dt.getSeconds().toString();
+                                                        
+                            var timeOfBooking = hrs+":"+min+":"+sec;
+                            var bookingObject = {Username : result.data.Username,TimeOfBooking:timeOfBooking};
                             res.json(bookingObject);
                           
                         });
