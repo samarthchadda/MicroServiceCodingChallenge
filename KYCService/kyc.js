@@ -23,48 +23,64 @@ mongoose.connect('mongodb+srv://samarth:YEhVsBnsh2nXlMa5@cluster0.ahjqa.mongodb.
                                             .catch(err=>console.log(err));
 
 
-
-// //KYC Registration functionality
-// app.post('/kyc',(req,res,next)=>{
+//KYC Registration functionality
+app.post('/kyc',(req,res,next)=>{
     
-//     // console.log(req.body);   //printing JSON data send by post request
+    // console.log(req.body);   //printing JSON data send by post request
 
-//     //saving KYC in our database
-//     var newKYC = {
-//         UserID:req.body.UserID,
-//         dateOfRegistration:req.body.dateOfRegistration            
-//     };
+    //saving KYC in our database
+    var newKYC = {
+        UserID:req.body.UserID,
+        dateOfRegistration:req.body.dateOfRegistration            
+    };
 
-//     //model instance
-//         //creating a new KYC with data from POST request
-//     var kyc = new KYCReg(newKYC);
+    //model instance
+        //creating a new KYC with data from POST request
+    var kyc = new KYCReg(newKYC);
 
-//     console.log(kyc);
+    console.log(kyc);
 
-//     //Registering USer (ONLY IF the LastName starts with "A")
-//     axios.get("http://localhost:3000/user/"+newKYC.UserID)
-//             .then(user=>{
-//                 console.log("USER : ", user.data);
+    //if user is already registered
+    KYCReg.find({UserID:req.body.UserID})
+            .then((user)=>{
+                console.log("User : ", user);
+                if(user[0])
+                {
+                    res.json({"KYCStatus":true,"Message":"USer is already registered"}); 
+                }
+                else{
 
-//                 if(user.data.LastName.startsWith('A')){
-//                     console.log("Name starts with A");
-//                     kyc.save().then(()=>{
-//                         console.log("New KYC Registered!");
-//                     }).catch(err=>console.log(err));
-                
-//                     // res.send("KYC Done!");
-//                     res.json({"KYCStatus":true});
-//                 }
-//                 else{
-//                     console.log("Different Name");
-//                     // res.send("KYC Registration Failed!");      
-//                     res.json({"KYCStatus":false});              
+                    
+                    //Registering USer (ONLY IF the LastName starts with "A")
+                    axios.get("http://localhost:3000/user/"+newKYC.UserID)
+                    .then(user=>{
+                        console.log("USER : ", user.data);
+                        
 
-//                 }
+                        if(user.data.LastName.startsWith('A')){
+                            console.log("Name starts with A");
+                            kyc.save().then(()=>{
+                                console.log("New KYC Registered!");
+                            }).catch(err=>console.log(err));
+                        
+                            // res.send("KYC Done!");
+                            res.json({"KYCStatus":true,"Message":"User Registration Complete!"});
+                        }
+                        else{
+                            console.log("Different Name");
+                            // res.send("KYC Registration Failed!");      
+                            res.json({"KYCStatus":false,"Message":"Name not starting with 'A'!"});              
 
-//             }) 
+                        }
+
+                    }) 
+
+                }
+            })
+
+
   
-// });
+});
 
 
 //To Get all KYCs
