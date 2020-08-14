@@ -67,7 +67,6 @@ mongoose.connect('mongodb+srv://samarth:YEhVsBnsh2nXlMa5@cluster0.ahjqa.mongodb.
 // });
 
 
-
 //To Get all KYCs
 app.get('/kycs',(req,res,next)=>{
 
@@ -85,29 +84,20 @@ app.get("/kyc/:id",(req,res,next)=>{
 
     //get request to IdentityService
     axios.get("http://localhost:3000/user/"+req.params.id)
-                        .then((result)=>{
-                            console.log("User Data : ",result.data);
-                            // var dt = new Date(KYCData.dateOfRegistration );
-                            // console.log(dt.toLocaleDateString());
+            .then((result)=>{
 
-                            // var KYCObject = {KYCid : KYCData._id,
-                            //                 UserID:result.data._id,
-                            //                 UserFirstName:result.data.FirstName,
-                            //                 UserLastName:result.data.LastName,
-                            //                 DateOfRegistration: dt.toLocaleDateString()                                           
-
-                            //             };
-
-                            var KYCObject = {};
-                            // console.log(result.data.LastName.startsWith('A'));
-                            if(result.data.LastName.startsWith('A')){
-                                KYCObject = { KYCStatus: true, message: "KYC is completed" }
-                            }else{
-                                KYCObject = { KYCStatus: false, message: "KYC is not completed" }
-                            }
-                            res.json(KYCObject);
-                            
-                        });
+                    console.log("User Data : ",result.data);
+                    
+                    var KYCObject = {};
+                    // console.log(result.data.LastName.startsWith('A'));
+                    if(result.data.LastName.startsWith('A')){
+                        KYCObject = { KYCStatus: true, message: "KYC is completed" }
+                    }else{
+                        KYCObject = { KYCStatus: false, message: "KYC is not completed" }
+                    }
+                    res.json(KYCObject);
+                    
+            });
 
 })
 

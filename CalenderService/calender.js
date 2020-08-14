@@ -41,13 +41,6 @@ console.log(newBooking);
                         var booking = new Booking(newBooking);
                         console.log(booking);
                         
-
-                        // var dt1 = new Date(booking.BookingInfo);
-                        // console.log("Date 1 : ", dt1);
-                        // var hrs1 = dt1.getHours().toString();
-                        // var min1 = dt1.getMinutes().toString();
-                        // var sec1 = dt1.getSeconds().toString();
-
                         //checking if booking already exist in a timeslot
 
                                 Booking.find().then((bookings)=>{
@@ -55,15 +48,24 @@ console.log(newBooking);
                                 let bookingBool = true;
 
                                 bookings.forEach(b=>{
-                                    // var dt2 = new Date(b.BookingInfo);
-                                    // console.log("Date 2 :", dt2);
-                                    // var hrs2 = dt2.getHours().toString();
-                                    // var min2 = dt2.getMinutes().toString();
-                                    // var sec2 = dt2.getSeconds().toString();
+                                  
                                     console.log("Booking 2 :", b.BookingInfo);
-
+                                    var dt1 = new Date(booking.BookingInfo);
+                                    console.log(dt1.getTime());
+                                    
+                                    var dt2 = new Date(b.BookingInfo);
+                                    console.log(dt2.getTime());
+                                    // console.log((dt1-dt2));
+                                    // var oneHrSlot = new Date(0,0,0,0,60,0,0);
+                                    // console.log((dt1-dt2)>oneHrSlot);
+                                    var diff = Math.abs(dt1-dt2);
+                                    var minutesDiff = Math.floor((diff/1000)/60);
+                                    console.log(minutesDiff);
+                                    
                                     // (b.BookingInfo -  booking.BookingInfo) < 60m
-                                    if(booking.BookingInfo.toString() === b.BookingInfo.toString())
+                                    // if(booking.BookingInfo.toString() === b.BookingInfo.toString())
+                                    // {
+                                    if(minutesDiff<=60)
                                     {
                                         console.log("TimeSlot is already occupied");
                                         bookingBool = false;              
@@ -84,20 +86,16 @@ console.log(newBooking);
                                     })
                                     .catch(err=>console.log(err));
                                 }else{
-                                    res.send("Booking not DONE");
+                                    res.send("Booking not DONE(SLOT NOT AVALIABLE)");
                                 }
 
                             })
                             .catch(err=>console.log(err))    
 
-
-
                     }else{
-                        res.json({"Status":false,"Message":"Sorry KYC not completed!"});
+                        res.json({"Status":false,"Message":"Sorry KYC not completed(Surname not starting with A)!"});
                     }
-                })
-    
-
+                })  
          
 })
 
@@ -107,8 +105,18 @@ app.get('/bookings',(req,res,next)=>{
 
         //this will return all the booking in collection
     Booking.find().then((bookings)=>{
+
+        var bookingObj = [];
+
+        bookings.forEach(b=>{
+            bookingObj.push({BookingID: b._id,
+                            UserID:b.UserID,
+                            DateOfBooking:b.BookingInfo.toDateString(),
+                            TimeOfBooking:b.BookingInfo.toTimeString(),})
+
+        })
         
-        res.json(bookings);
+        res.json(bookingObj);
     })
     .catch(err=>console.log(err));
 
@@ -129,11 +137,7 @@ app.get("/booking/:id",(req,res,next)=>{
                         .then((result)=>{
                             console.log("User Data : ",result.data);
                             var dt = new Date(bookingData.BookingInfo);
-                            // var hrs = dt.getHours().toString();
-                            // var min = dt.getMinutes().toString();
-                            // var sec = dt.getSeconds().toString();
-                                                        
-                            // var timeOfBooking = hrs+":"+min+":"+sec;
+                      
                             var bookingObject = {Username : result.data.Username,TimeOfBooking:dt.toTimeString()};
                             res.json(bookingObject);
                           
