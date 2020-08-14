@@ -29,11 +29,23 @@ exports.PostAddUser = (req,res,next)=>{
 
         console.log(user);
 
-        user.save().then(()=>{
-            console.log("New User Created!");
-        }).catch(err=>console.log(err));
+        //if user's data is already stored
+        User.find({Username:req.body.Username})
+            .then((userData)=>{
+                if(userData[0])
+                {
+                    res.send("User information already exists!")
+                }
+                else{
 
-        res.send("User Created with success");
+                    user.save().then(()=>{
+                        console.log("New User Created!");
+                    }).catch(err=>console.log(err));
+            
+                    res.send("User Created with success");
+
+                }
+            })      
 
 };
 

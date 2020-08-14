@@ -25,6 +25,9 @@ router.post('/booking', cmdController.PostNewBooking);
 
 router.post('/kyc', cmdController.PostUserKyc);
 
+//DELETE requests
+router.delete("/user/:id",cmdController.deleteSingleUser);
+
 
 
 module.exports = router;

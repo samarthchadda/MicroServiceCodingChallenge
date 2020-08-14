@@ -30,19 +30,3 @@ app.listen(3001,()=>{
 });
 
 
-//TEST CASES--
-
-// Test Case Name                                      Test Case Steps
-// Validate that user is able to book a slot           1. Open postman
-//                                                     2. Enter url: ".ldflkjd"
-//                                                     3. Enter request body data: "...."
-//                                                     4. Press Send button.
-//                                                     5. Verify that user is able to view the response in the required format.
-
-//                                                     Required Format:
-//                                                     "....."
-
-// Validate that user is able to register              1. Open postman
-//                                                     2. Enter url: ".ldflkjd"
-//                                                     3. Enter request body data: "...."
-//                                                     4. Press Send button.

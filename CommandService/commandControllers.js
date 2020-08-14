@@ -92,8 +92,17 @@ exports.PostUserKyc = (req,res,next)=>{
 
                 res.json(result.data);
             })
-
 };
 
+
+exports.deleteSingleUser = (req,res,next)=>{
+
+    axios.delete('http://localhost:3000/user/'+req.params.id)
+            .then(result=>{
+                console.log(result.data);
+
+                res.json(result.data);
+            })
+};
 
 

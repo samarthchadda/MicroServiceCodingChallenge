@@ -32,7 +32,6 @@ exports.PostUserKyc = (req,res,next)=>{
                     res.json({"KYCStatus":true,"Message":"USer is already registered"}); 
                 }
                 else{
-
                     
                     //Registering USer (ONLY IF the LastName starts with "A")
                     axios.get("http://localhost:3000/user/"+newKYC.UserID)
