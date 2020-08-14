@@ -30,14 +30,6 @@ app.listen(3001,()=>{
 });
 
 
-//MVC approach in each service
-             
-//Command Service --
-//localhost:4000/...
-
-//all possible functionality will be called from this ports onwards
-
-
 //TEST CASES--
 
 // Test Case Name                                      Test Case Steps
@@ -54,10 +46,3 @@ app.listen(3001,()=>{
 //                                                     2. Enter url: ".ldflkjd"
 //                                                     3. Enter request body data: "...."
 //                                                     4. Press Send button.
-
-//                                                     basically same chize
-//                                                     okay bahi
-//                                                     THANK YOU bht jyada... :))))anytime
-//                                                     bro
-//                                                     So skta h ab true...thike by by gn sd tc <
-//                                                     3ok bye<3
